@@ -1,0 +1,46 @@
+name: Rust Build/Test
+
+# The trigger structure here is a little confusing but it specifies to
+# run on all pushes, and then subsequent pushes during a PR to the main.
+# It skips running after a PR is merged because by then it will have
+# already been run on the main branch.
+
+on:
+  push:
+    branches-ignore:
+      - "main"
+    paths:
+      - "src/rust/**/*.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "src/rust/**/*.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
