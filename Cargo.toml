@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "src/rust/rust-demultiplex",
+    "src/rust/rust-umi"
+]
+
+[profile.release]
+opt-level = 3
