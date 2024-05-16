@@ -11,15 +11,15 @@ on:
       - "main"
     paths:
       - "src/rust/**/*.rs"
-      - "Cargo.toml"
-      - "Cargo.lock"
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
   pull_request:
     branches:
       - "main"
     paths:
       - "src/rust/**/*.rs"
-      - "Cargo.toml"
-      - "Cargo.lock"
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
 env:
   CARGO_TERM_COLOR: always
 
